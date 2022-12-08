@@ -30,7 +30,7 @@ func main() {
 
 		fmt.Println("login invoked")
 		var account auth.Account
-		ctx.ReadBody(&account)
+		ctx.ReadJSON(&account)
 		fmt.Print("Get login param userName: " + account.UserName + " ; password : " + account.Password)
 		db.Create(&account)
 		response := model.BaseResponse[string]{Code: iris.StatusOK, Message: "ok", Data: "login token"}
@@ -42,9 +42,9 @@ func main() {
 		var accounts []auth.Account
 		result := db.Find(&accounts)
 		if result.Error == nil {
-			ctx.JSON(model.BaseResponse[[]auth.Account]{ Code: iris.StatusOK, Message: "", Data: accounts})
+			ctx.JSON(model.BaseResponse[[]auth.Account]{Code: iris.StatusOK, Message: "", Data: accounts})
 		} else {
-			ctx.JSON(model.BaseResponse[any]{ Code: iris.StatusInternalServerError, Message: result.Error.Error(), Data: nil })
+			ctx.JSON(model.BaseResponse[any]{Code: iris.StatusInternalServerError, Message: result.Error.Error(), Data: nil})
 		}
 	})
 
